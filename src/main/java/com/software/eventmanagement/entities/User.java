@@ -1,11 +1,13 @@
 package com.software.eventmanagement.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Table(name = "user")
 @Entity
+@Table(name = "users")
 public class User {
+    @Id
     private int id;
     private String password;
     private String name;

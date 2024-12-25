@@ -1,4 +1,4 @@
-package com.software.eventmanagement.Services;
+package com.software.eventmanagement.services;
 
 import com.software.eventmanagement.entities.User;
 import com.software.eventmanagement.repositories.UserRepository;

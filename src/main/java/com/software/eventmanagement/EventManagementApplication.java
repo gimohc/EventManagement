@@ -1,10 +1,8 @@
 package com.software.eventmanagement;
 
-import com.software.eventmanagement.Services.EventService;
-import com.software.eventmanagement.Services.StudentService;
-import com.software.eventmanagement.Services.UserService;
+import com.software.eventmanagement.services.EventService;
+import com.software.eventmanagement.services.UserService;
 import com.software.eventmanagement.entities.Event;
-import com.software.eventmanagement.entities.Student;
 import com.software.eventmanagement.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -39,26 +37,6 @@ class UserController {
     }
 }
 
-
-@RestController
-@RequestMapping("/students")
-class StudentController {
-    @Autowired
-    private StudentService studentService;
-
-    @GetMapping
-    public List<Student> getAllStudents() {
-        return studentService.findAll();
-    }
-
-    @PostMapping
-    public Student createStudent(@RequestBody Student student) {
-        return studentService.save(student);
-    }
-
-}
-
-
 @RestController
 @RequestMapping("/events")
 class EventController {
@@ -69,7 +47,7 @@ class EventController {
     public List<Event> getAllEvents() {
         return eventService.findAll();
     }
-/*
+
     @GetMapping("/{id}")
     public ResponseEntity<Event> getEventById(@PathVariable Long id) {
         Event event = eventService.findById(id);
@@ -79,22 +57,21 @@ class EventController {
             return ResponseEntity.notFound().build();
         }
     }
-*/
+
     @PostMapping
     public Event createEvent(@RequestBody Event event) {
         return eventService.save(event);
     }
 
-    /*@PutMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event eventDetails) {
-        Event updatedEvent = eventService.update(id, eventDetails);
+        Event updatedEvent = eventService.edit(id, eventDetails);
         if (updatedEvent != null) {
             return ResponseEntity.ok(updatedEvent);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
         boolean deleted = eventService.delete(id);
@@ -105,7 +82,7 @@ class EventController {
         }
     }
 
-     */
+
 }
 
 
