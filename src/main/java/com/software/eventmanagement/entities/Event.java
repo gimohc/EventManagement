@@ -2,6 +2,8 @@ package com.software.eventmanagement.entities;
 
 import jakarta.persistence.*;
 
+import java.sql.Date;
+
 enum Type {
     TRAINING,
     COMPETITION,
@@ -24,8 +26,9 @@ public class Event {
     private String description;
     private String mentorName; // faculty member
     private Type type;
+    private Date date;
 
-    public Event(long id, String organizerId, String location, String services, String phoneNumber, String description, String mentorName, Type type) {
+    public Event(long id, String organizerId, String location, String services, String phoneNumber, String description, String mentorName, Type type, Date date) {
         this.id = id;
         OrganizerId = organizerId;
         this.location = location;
@@ -34,6 +37,7 @@ public class Event {
         this.description = description;
         this.mentorName = mentorName;
         this.type = type;
+        this.date = date;
     }
 
     public Event(long id, Event event) {
@@ -44,12 +48,10 @@ public class Event {
         this.description = event.getDescription();
         this.mentorName = event.getMentorName();
         this.type = event.getType();
+        this.date = event.getDate();
     }
 
-    public Event(String organizerId, String location, String services, String phoneNumber, String description, String mentorName, Type type) {
-        OrganizerId = organizerId;
 
-    }
 
     public Event() {
     }
@@ -116,5 +118,13 @@ public class Event {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

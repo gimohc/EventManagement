@@ -1,6 +1,8 @@
 package com.software.eventmanagement;
 
+import com.software.eventmanagement.entities.Student;
 import com.software.eventmanagement.services.EventService;
+import com.software.eventmanagement.services.StudentService;
 import com.software.eventmanagement.services.UserService;
 import com.software.eventmanagement.entities.Event;
 import com.software.eventmanagement.entities.User;
@@ -38,6 +40,21 @@ class UserController {
 }
 
 @RestController
+@RequestMapping("/students")
+class StudentController {
+    @Autowired
+    private StudentService studentService;
+    @GetMapping("/{id}")
+    public ResponseEntity<Student> getStudent(@PathVariable int id) {
+        Student student = studentService.findById(id);
+        if(student == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(student);
+    }
+}
+
+@RestController
 @RequestMapping("/events")
 class EventController {
     @Autowired
@@ -53,9 +70,9 @@ class EventController {
         Event event = eventService.findById(id);
         if (event != null) {
             return ResponseEntity.ok(event);
-        } else {
-            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.notFound().build();
+
     }
 
     @PostMapping
