@@ -28,8 +28,9 @@ public class Event {
     private Type type;
     private Date date;
     private short seats;
+    private short participants;
 
-    public Event(long id, String organizerId, String location, String services, String phoneNumber, String description, String mentorName, Type type, Date date, short seats) {
+    public Event(long id, String organizerId, String location, String services, String phoneNumber, String description, String mentorName, Type type, Date date, short seats, short participants) {
         this.id = id;
         OrganizerId = organizerId;
         this.location = location;
@@ -40,6 +41,7 @@ public class Event {
         this.type = type;
         this.date = date;
         this.seats = seats;
+        this.participants = participants;
     }
 
     public Event(long id, Event event) {
@@ -52,11 +54,20 @@ public class Event {
         this.type = event.getType();
         this.date = event.getDate();
         this.seats = event.getSeats();
+        this.participants = event.getParticipants();
     }
 
 
 
     public Event() {
+    }
+
+    public short getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(short participants) {
+        this.participants = participants;
     }
 
     public short getSeats() {
