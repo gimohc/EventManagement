@@ -1,33 +1,17 @@
 package com.software.eventmanagement.student;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.software.eventmanagement.entities.Person;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "students")
-public class Student {
-    @Id
-    private int id;
-    private String name;
+public class Student extends Person {
     private String major;
 
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    @ElementCollection
+    private List<String> events;
 
     public String getMajor() {
         return major;
@@ -35,5 +19,13 @@ public class Student {
 
     public void setMajor(String major) {
         this.major = major;
+    }
+
+    public List<String> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<String> events) {
+        this.events = events;
     }
 }
