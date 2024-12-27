@@ -1,7 +1,5 @@
-package com.software.eventmanagement.services;
+package com.software.eventmanagement.user;
 
-import com.software.eventmanagement.entities.User;
-import com.software.eventmanagement.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

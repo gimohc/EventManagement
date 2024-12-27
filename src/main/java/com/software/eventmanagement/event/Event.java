@@ -1,4 +1,4 @@
-package com.software.eventmanagement.entities;
+package com.software.eventmanagement.event;
 
 import jakarta.persistence.*;
 

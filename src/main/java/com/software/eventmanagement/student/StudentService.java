@@ -1,7 +1,5 @@
-package com.software.eventmanagement.services;
+package com.software.eventmanagement.student;
 
-import com.software.eventmanagement.entities.Student;
-import com.software.eventmanagement.repositories.StudentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.software.eventmanagement.entities;
+package com.software.eventmanagement.user;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -8,16 +8,16 @@ import jakarta.persistence.Table;
 @Table(name = "users")
 public class User {
     @Id
-    private int id;
+    private String username;
     private String password;
     private String name;
 
-    public int getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = this.username;
     }
 
     public String getPassword() {

@@ -1,4 +1,4 @@
-package com.software.eventmanagement.entities;
+package com.software.eventmanagement.student;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -10,6 +10,8 @@ public class Student {
     @Id
     private int id;
     private String name;
+    private String major;
+
 
     public int getId() {
         return id;
@@ -25,5 +27,13 @@ public class Student {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
     }
 }
