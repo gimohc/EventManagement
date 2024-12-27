@@ -23,4 +23,14 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         return ResponseEntity.ok(studentService.verifyStudent(student));
     }
+    @PostMapping("/enrollInEvent/{eventId}/{studentId}")
+    public ResponseEntity<?> enrollInEvent(@PathVariable Long eventId, @PathVariable String studentId) {
+        if(studentService.enrollInEvent(eventId, studentId))
+            return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Student not found");
+    }
+    @PostMapping("/cancelEvent/{eventId}/{studentId}")
+    public void cancelEvent(@PathVariable Long eventId, @PathVariable String studentId) {
+        studentService.cancelEnrollment(eventId, studentId);
+    }
 }

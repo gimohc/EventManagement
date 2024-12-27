@@ -3,6 +3,8 @@ package com.software.eventmanagement.event;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 enum Type {
     TRAINING,
@@ -18,30 +20,37 @@ enum Type {
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long id; // automatic, not input by registration
     private String OrganizerId;
     private String location;
     private String services; // separate multiple services by comma
     private String phoneNumber;
     private String description;
-    private String mentorName; // faculty member
+    private String mentorName; // supervisor (faculty member)
     private Type type;
-    private Date date;
-    private short seats;
-    private short participants;
+    private Date startTime;
+    private Date endTime;
+    private short seats; // maximum number of seats
+    private short participants; // number of current participants, not input by registration
+    private short rating; // not input by registration
+    @ElementCollection
+    private List<String> feedback; // not input by registration
 
-    public Event(long id, String organizerId, String location, String services, String phoneNumber, String description, String mentorName, Type type, Date date, short seats, short participants) {
+    public Event(long id, String organizerId, String location, String services, String phoneNumber, String description, String mentorName, Type type, Date startTime, Date endTime, short seats, short participants) {
         this.id = id;
-        OrganizerId = organizerId;
+        this.OrganizerId = organizerId;
         this.location = location;
         this.services = services;
         this.phoneNumber = phoneNumber;
         this.description = description;
         this.mentorName = mentorName;
         this.type = type;
-        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.seats = seats;
         this.participants = participants;
+        this.rating = 0;
+        this.feedback = new ArrayList<String>();
     }
 
     public Event(long id, Event event) {
@@ -52,14 +61,42 @@ public class Event {
         this.description = event.getDescription();
         this.mentorName = event.getMentorName();
         this.type = event.getType();
-        this.date = event.getDate();
+        this.startTime = event.getStartTime();
         this.seats = event.getSeats();
         this.participants = event.getParticipants();
+        this.OrganizerId =event.getOrganizerId();
+        this.rating = event.getRating();
+        this.feedback= event.getFeedback();
+        this.endTime = event.getEndTime();
     }
 
 
 
     public Event() {
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public short getRating() {
+        return rating;
+    }
+
+    public void setRating(short rating) {
+        this.rating = rating;
+    }
+
+    public List<String> getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(List<String> feedback) {
+        this.feedback = feedback;
     }
 
     public short getParticipants() {
@@ -142,11 +179,11 @@ public class Event {
         this.type = type;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getStartTime() {
+        return startTime;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setStartTime(Date date) {
+        this.startTime = date;
     }
 }

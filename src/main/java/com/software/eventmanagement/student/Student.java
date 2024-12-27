@@ -9,9 +9,9 @@ import java.util.List;
 @Table(name = "students")
 public class Student extends Person {
     private String major;
-
     @ElementCollection
-    private List<String> events;
+    private List<Long> events;
+
 
     public String getMajor() {
         return major;
@@ -21,11 +21,11 @@ public class Student extends Person {
         this.major = major;
     }
 
-    public List<String> getEvents() {
+    public List<Long> getEvents() {
         return events;
     }
 
-    public void setEvents(List<String> events) {
+    public void setEvents(List<Long> events) {
         this.events = events;
     }
 }
