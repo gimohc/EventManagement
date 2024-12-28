@@ -33,4 +33,8 @@ public class StudentController {
     public void cancelEvent(@PathVariable Long eventId, @PathVariable String studentId) {
         studentService.cancelEnrollment(eventId, studentId);
     }
+    @PostMapping("/rate/{eventId}/{studentId}/{rating}")
+    public void rateEvent(@PathVariable Long eventId, @PathVariable String studentId, @PathVariable short rating) {
+        studentService.rateEvent(eventId, studentId, rating);
+    }
 }

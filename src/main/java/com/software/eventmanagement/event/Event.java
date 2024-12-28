@@ -3,6 +3,7 @@ package com.software.eventmanagement.event;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ enum Type {
     COMPETITION,
     WORKSHOP,
     LECTURE,
-    INTIATIVE,
+    INITIATIVE,
     EXHIBITION
 }
 
@@ -28,21 +29,25 @@ public class Event {
     private String description;
     private String mentorName; // supervisor (faculty member)
     private Type type;
-    private Date startTime;
-    private Date endTime;
+    private Date date;
+    private Time startTime;
+    private Time endTime;
     private short seats; // maximum number of seats
     private short participants; // number of current participants, not input by registration
     private short rating; // not input by registration
+    private short numRatings;
+
     @ElementCollection
     private List<String> feedback; // not input by registration
 
-    public Event(long id, String organizerId, String location, String services, String phoneNumber, String description, String mentorName, Type type, Date startTime, Date endTime, short seats, short participants) {
+    public Event(long id, String organizerId, String location, String services, String phoneNumber, String description, String mentorName, Type type, Date date, Time startTime, Time endTime, short seats, short participants, short numRatings) {
         this.id = id;
         this.OrganizerId = organizerId;
         this.location = location;
         this.services = services;
         this.phoneNumber = phoneNumber;
         this.description = description;
+        this.date = date;
         this.mentorName = mentorName;
         this.type = type;
         this.startTime = startTime;
@@ -51,6 +56,7 @@ public class Event {
         this.participants = participants;
         this.rating = 0;
         this.feedback = new ArrayList<String>();
+        this.numRatings = 0;
     }
 
     public Event(long id, Event event) {
@@ -68,6 +74,8 @@ public class Event {
         this.rating = event.getRating();
         this.feedback= event.getFeedback();
         this.endTime = event.getEndTime();
+        this.date = event.getDate();
+        this.numRatings = event.getNumRatings();
     }
 
 
@@ -75,11 +83,35 @@ public class Event {
     public Event() {
     }
 
-    public Date getEndTime() {
+    public short getNumRatings() {
+        return numRatings;
+    }
+
+    public void setNumRatings(short numRatings) {
+        this.numRatings = numRatings;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Time getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Time startTime) {
+        this.startTime = startTime;
+    }
+
+    public Time getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(Time endTime) {
         this.endTime = endTime;
     }
 
@@ -179,11 +211,4 @@ public class Event {
         this.type = type;
     }
 
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date date) {
-        this.startTime = date;
-    }
 }

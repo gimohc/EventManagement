@@ -2,8 +2,6 @@ package com.software.eventmanagement.student;
 
 import com.software.eventmanagement.event.Event;
 import com.software.eventmanagement.event.EventService;
-import com.software.eventmanagement.event.EventsRepository;
-import com.software.eventmanagement.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,7 +34,7 @@ public class StudentService {
         if(student == null)
             return false;
         Event event = eventService.findById(eventId);
-        if(event.getSeats() >= event.getParticipants())
+        if(event == null || event.getSeats() >= event.getParticipants())
             return false;
         event.setParticipants((short) (event.getParticipants()+1));
         eventService.save(event);
@@ -48,8 +46,7 @@ public class StudentService {
         Student student = findById(studentId);
         if(student == null)
             return false;
-        List<Long> studentEvents = student.getEvents();
-        if(!studentEvents.contains(eventId))
+        if(studentNotEnrolled(eventId, studentId))
             return false;
         Event event = eventService.findById(eventId);
         event.setParticipants((short) (event.getParticipants()-1));
@@ -57,5 +54,27 @@ public class StudentService {
         student.getEvents().remove(eventId);
         repository.save(student);
         return true;
+    }
+    public boolean rateEvent(Long eventId, String studentId, short rating) {
+        Student student = findById(studentId);
+        if(student == null)
+            return false;
+        Event event = eventService.findById(eventId);
+        if(event == null || studentNotEnrolled(eventId, studentId))
+            return false;
+        short oldRatings = event.getRating();
+        short numRatings = event.getNumRatings();
+        rating = (short)((oldRatings * numRatings + rating) / (numRatings + 1));
+        event.setRating(rating);
+        event.setNumRatings((short)(numRatings+1));
+        eventService.save(event);
+        return true;
+    }
+    public boolean studentNotEnrolled(Long eventId, String studentId) {
+        Student student = findById(studentId);
+        if(student == null)
+            return true;
+        List<Long> studentEvents = student.getEvents();
+        return !studentEvents.contains(eventId);
     }
 }
