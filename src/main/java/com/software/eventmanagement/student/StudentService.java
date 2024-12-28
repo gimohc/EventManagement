@@ -42,33 +42,28 @@ public class StudentService {
         repository.save(student);
         return true;
     }
-    public boolean cancelEnrollment(Long eventId, String studentId) {
+    public void cancelEnrollment(Long eventId, String studentId) {
         Student student = findById(studentId);
-        if(student == null)
-            return false;
-        if(studentNotEnrolled(eventId, studentId))
-            return false;
+        if(student == null || studentNotEnrolled(eventId, studentId))
+            return;
         Event event = eventService.findById(eventId);
         event.setParticipants((short) (event.getParticipants()-1));
         eventService.save(event);
         student.getEvents().remove(eventId);
         repository.save(student);
-        return true;
     }
-    public boolean rateEvent(Long eventId, String studentId, short rating) {
+    public void rateEvent(Long eventId, String studentId, short rating) {
         Student student = findById(studentId);
-        if(student == null)
-            return false;
         Event event = eventService.findById(eventId);
-        if(event == null || studentNotEnrolled(eventId, studentId))
-            return false;
+
+        if(student == null || event == null || studentNotEnrolled(eventId, studentId))
+            return;
         short oldRatings = event.getRating();
         short numRatings = event.getNumRatings();
         rating = (short)((oldRatings * numRatings + rating) / (numRatings + 1));
         event.setRating(rating);
         event.setNumRatings((short)(numRatings+1));
         eventService.save(event);
-        return true;
     }
     public boolean studentNotEnrolled(Long eventId, String studentId) {
         Student student = findById(studentId);

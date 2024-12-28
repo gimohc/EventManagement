@@ -59,8 +59,10 @@ public class Event {
         this.numRatings = 0;
     }
 
-    public Event(long id, Event event) {
-        this.id = id;
+    public Event(long id, String organizerId, Event event) {
+        this.id = id; // doesnt change
+        this.OrganizerId = organizerId; // doesnt change
+
         this.location = event.getLocation();
         this.services = event.getServices();
         this.phoneNumber = event.getPhoneNumber();
@@ -70,7 +72,6 @@ public class Event {
         this.startTime = event.getStartTime();
         this.seats = event.getSeats();
         this.participants = event.getParticipants();
-        this.OrganizerId =event.getOrganizerId();
         this.rating = event.getRating();
         this.feedback= event.getFeedback();
         this.endTime = event.getEndTime();

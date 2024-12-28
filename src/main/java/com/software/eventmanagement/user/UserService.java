@@ -15,17 +15,17 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User save(User user) {
+    public void save(User user) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        userRepository.save(user);
     }
     public User verifyUser(User user) {
         if(userRepository.findById(user.getUsername()).isPresent()) {
             User found = userRepository.findById(user.getUsername()).get();
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             if(passwordEncoder.matches(user.getPassword(), found.getPassword()))
-                return found;
+                return user;
         }
         return null;
     }

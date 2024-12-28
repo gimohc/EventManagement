@@ -24,20 +24,26 @@ public class EventService {
         return null;
     }
 
-    public boolean delete(long id) {
-        if (repository.findById(id).isEmpty()) {
+    public boolean delete(long id, String userId) {
+        Event event = findById(id);
+        if (event != null && event.getOrganizerId().equals(userId)) {
             repository.deleteById(id);
             return true;
         }
         return false;
     }
 
-    public Event edit(long id, Event newEventDetails) {
-        if (repository.findById(id).isPresent()) {
-            Event newEvent = new Event(id, newEventDetails);
-            repository.save(newEvent);
-            return newEvent;
+    public Event edit(long id, String userId, Event newEventDetails) {
+        Event event = findById(id);
+        if(event != null) {
+            String organizer = event.getOrganizerId();
+            if (organizer.equals(userId)) {
+                Event newEvent = new Event(id, organizer, newEventDetails);
+                repository.save(newEvent);
+                return newEvent;
+            }
         }
+
         return null;
     }
 

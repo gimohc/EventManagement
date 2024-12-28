@@ -1,4 +1,6 @@
 package com.software.eventmanagement.student;
+import com.software.eventmanagement.Cookies.CookieController;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,23 +20,29 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
     @PostMapping("/verifyStudent")
-    public ResponseEntity<?> verifyUser(@RequestBody Student student) {
+    public ResponseEntity<?> verifyUser(@RequestBody Student student, HttpServletResponse response) {
         if (studentService.verifyStudent(student) == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid username or password");
+        CookieController.setStudentCookie(response, student.getUsername());
         return ResponseEntity.ok(studentService.verifyStudent(student));
     }
-    @PostMapping("/enrollInEvent/{eventId}/{studentId}")
-    public ResponseEntity<?> enrollInEvent(@PathVariable Long eventId, @PathVariable String studentId) {
+
+    @PostMapping("/enrollInEvent/{eventId}/")
+    public ResponseEntity<?> enrollInEvent(@PathVariable Long eventId, @CookieValue(value= "studentAuthenticationToken") String studentId) {
+        studentId = CookieController.getUsernameFromCookie(studentId);
         if(studentService.enrollInEvent(eventId, studentId))
-            return ResponseEntity.ok().build();
+            return ResponseEntity.status(HttpStatus.OK).build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Student not found");
     }
-    @PostMapping("/cancelEvent/{eventId}/{studentId}")
-    public void cancelEvent(@PathVariable Long eventId, @PathVariable String studentId) {
+
+    @PostMapping("/cancelEvent/{eventId}")
+    public void cancelEvent(@PathVariable Long eventId, @CookieValue(value= "studentAuthenticationToken") String studentId) {
+        studentId = CookieController.getUsernameFromCookie(studentId);
         studentService.cancelEnrollment(eventId, studentId);
     }
-    @PostMapping("/rate/{eventId}/{studentId}/{rating}")
-    public void rateEvent(@PathVariable Long eventId, @PathVariable String studentId, @PathVariable short rating) {
+    @PostMapping("/rate/{eventId}/{rating}")
+    public void rateEvent(@PathVariable Long eventId, @CookieValue(value= "studentAuthenticationToken") String studentId, @PathVariable short rating) {
+        studentId = CookieController.getUsernameFromCookie(studentId);
         studentService.rateEvent(eventId, studentId, rating);
     }
 }

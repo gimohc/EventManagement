@@ -1,5 +1,7 @@
 package com.software.eventmanagement.user;
 
+import com.software.eventmanagement.Cookies.CookieController;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +21,17 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.save(user);
+    public ResponseEntity<?> createUser(@RequestBody User user, HttpServletResponse response) {
+        userService.save(user);
+        CookieController.setUserCookie(response, user.getUsername());
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping("/verifyUser")
-    public ResponseEntity<?> verifyUser(@RequestBody User user) {
+    public ResponseEntity<?> verifyUser(@RequestBody User user, HttpServletResponse response) {
         if (userService.verifyUser(user) == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
-        return ResponseEntity.ok(userService.verifyUser(user));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid username or password");
+        CookieController.setUserCookie(response, user.getUsername());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 }
