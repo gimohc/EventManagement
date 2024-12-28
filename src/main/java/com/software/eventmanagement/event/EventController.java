@@ -39,9 +39,8 @@ public class EventController {
         Event updatedEvent = eventService.edit(id, userId, eventDetails);
         if (updatedEvent != null) {
             return ResponseEntity.ok(updatedEvent);
-        } else {
-            return ResponseEntity.badRequest().build();
         }
+        return ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping("/{id}")
@@ -50,8 +49,7 @@ public class EventController {
         boolean deleted = eventService.delete(id, userId);
         if (deleted) {
             return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.notFound().build();
     }
 }

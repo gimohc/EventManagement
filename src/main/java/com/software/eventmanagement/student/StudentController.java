@@ -1,5 +1,6 @@
 package com.software.eventmanagement.student;
 import com.software.eventmanagement.Cookies.CookieController;
+import com.software.eventmanagement.entities.LoginRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,11 +21,11 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
     @PostMapping("/verifyStudent")
-    public ResponseEntity<?> verifyUser(@RequestBody Student student, HttpServletResponse response) {
-        if (studentService.verifyStudent(student) == null)
+    public ResponseEntity<?> verifyUser(@RequestBody LoginRequest request, HttpServletResponse response) {
+        if (studentService.verifyStudent(request) == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid username or password");
-        CookieController.setStudentCookie(response, student.getUsername());
-        return ResponseEntity.ok(studentService.verifyStudent(student));
+        CookieController.setStudentCookie(response, request.getUsername());
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping("/enrollInEvent/{eventId}/")

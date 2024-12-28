@@ -1,10 +1,12 @@
 package com.software.eventmanagement.user;
 
+import com.software.eventmanagement.entities.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -20,12 +22,13 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
-    public User verifyUser(User user) {
-        if(userRepository.findById(user.getUsername()).isPresent()) {
-            User found = userRepository.findById(user.getUsername()).get();
+    public User verifyUser(LoginRequest loginRequest) {
+        Optional<User> user = userRepository.findById(loginRequest.getUsername());
+        if(user.isPresent()) {
+            User found = user.get();
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if(passwordEncoder.matches(user.getPassword(), found.getPassword()))
-                return user;
+            if(passwordEncoder.matches(loginRequest.getPassword(), found.getPassword()))
+                return found;
         }
         return null;
     }

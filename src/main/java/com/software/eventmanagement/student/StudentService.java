@@ -1,5 +1,6 @@
 package com.software.eventmanagement.student;
 
+import com.software.eventmanagement.entities.LoginRequest;
 import com.software.eventmanagement.event.Event;
 import com.software.eventmanagement.event.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -20,11 +22,12 @@ public class StudentService {
             return repository.findById(id).get();
         return null;
     }
-    public Student verifyStudent(Student student) {
-        if(repository.findById(student.getUsername()).isPresent()) {
-            Student found = repository.findById(student.getUsername()).get();
+    public Student verifyStudent(LoginRequest request) {
+        Optional<Student> student = repository.findById(request.getUsername());
+        if(student.isPresent()) {
+            Student found = student.get();
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if(passwordEncoder.matches(student.getPassword(), found.getPassword()))
+            if(passwordEncoder.matches(request.getPassword(), found.getPassword()))
                 return found;
         }
         return null;
