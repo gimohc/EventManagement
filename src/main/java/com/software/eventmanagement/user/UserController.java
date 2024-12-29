@@ -30,9 +30,10 @@ public class UserController {
 
     @PostMapping("/verifyUser")
     public ResponseEntity<?> verifyUser(@RequestBody LoginRequest request, HttpServletResponse response) {
+        System.out.println("in verify");
         if (userService.verifyUser(request) == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid username or password");
         CookieController.setUserCookie(response, request.getUsername());
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK).body("validation successful");
     }
 }

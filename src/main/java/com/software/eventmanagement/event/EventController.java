@@ -37,6 +37,7 @@ public class EventController {
     public ResponseEntity<Event> updateEvent(@PathVariable Long id, @CookieValue(value= "userAuthenticationToken") String userId, @RequestBody Event eventDetails) {
         userId = CookieController.getUsernameFromCookie(userId);
         Event updatedEvent = eventService.edit(id, userId, eventDetails);
+        System.out.println("in id");
         if (updatedEvent != null) {
             return ResponseEntity.ok(updatedEvent);
         }
