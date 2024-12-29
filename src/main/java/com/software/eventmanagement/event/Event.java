@@ -1,9 +1,11 @@
 package com.software.eventmanagement.event;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,17 +32,20 @@ public class Event {
     private String mentorName; // supervisor (faculty member)
     private Type type;
     private Date date;
-    private Time startTime;
-    private Time endTime;
     private short seats; // maximum number of seats
     private short participants; // number of current participants, not input by registration
     private short rating; // not input by registration
     private short numRatings;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+    private LocalTime startTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+    private LocalTime endTime;
+
     @ElementCollection
     private List<String> feedback; // not input by registration
 
-    public Event(long id, String organizerId, String location, String services, String phoneNumber, String description, String mentorName, Type type, Date date, Time startTime, Time endTime, short seats, short participants, short numRatings) {
+    public Event(long id, String organizerId, String location, String services, String phoneNumber, String description, String mentorName, Type type, Date date, LocalTime startTime, LocalTime endTime, short seats, short participants, short numRatings) {
         this.id = id;
         this.OrganizerId = organizerId;
         this.location = location;
@@ -59,9 +64,13 @@ public class Event {
         this.numRatings = 0;
     }
 
-    public Event(long id, String organizerId, Event event) {
-        this.id = id; // doesnt change
-        this.OrganizerId = organizerId; // doesnt change
+    public Event(Event oldEventDetails, Event event) {
+        this.id = oldEventDetails.getId(); // doesnt change
+        this.OrganizerId = oldEventDetails.getOrganizerId(); // doesnt change
+        this.feedback= oldEventDetails.getFeedback(); // cant edit
+        this.rating = oldEventDetails.getRating(); // cant edit
+        this.numRatings = oldEventDetails.getNumRatings(); // cant edit
+        this.participants = oldEventDetails.getParticipants(); // cant edit
 
         this.location = event.getLocation();
         this.services = event.getServices();
@@ -72,11 +81,9 @@ public class Event {
         this.startTime = event.getStartTime();
         this.seats = event.getSeats();
         this.participants = event.getParticipants();
-        this.rating = event.getRating();
-        this.feedback= event.getFeedback();
         this.endTime = event.getEndTime();
         this.date = event.getDate();
-        this.numRatings = event.getNumRatings();
+
     }
 
 
@@ -100,19 +107,19 @@ public class Event {
         this.date = date;
     }
 
-    public Time getStartTime() {
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Time startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
-    public Time getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Time endTime) {
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
 

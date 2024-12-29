@@ -1,5 +1,5 @@
 package com.software.eventmanagement.student;
-import com.software.eventmanagement.Cookies.CookieController;
+import com.software.eventmanagement.cookies.CookieController;
 import com.software.eventmanagement.entities.LoginRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class StudentController {
         studentId = CookieController.getUsernameFromCookie(studentId);
         if (studentService.enrollInEvent(eventId, studentId))
             return ResponseEntity.status(HttpStatus.OK).build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Student not found");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"Student not found\"}");
     }
 
     @PostMapping("/cancelEvent/{eventId}")

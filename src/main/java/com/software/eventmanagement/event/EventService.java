@@ -38,7 +38,7 @@ public class EventService {
         if(event != null) {
             String organizer = event.getOrganizerId();
             if (organizer.equals(userId)) {
-                Event newEvent = new Event(id, organizer, newEventDetails);
+                Event newEvent = new Event(event, newEventDetails);
                 repository.save(newEvent);
                 return newEvent;
             }

@@ -11,6 +11,7 @@ public class User extends Person {
     private String organizationName;
     private String email;
 
+
     public String getEmail() {
         return email;
     }

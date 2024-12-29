@@ -1,6 +1,6 @@
 package com.software.eventmanagement.event;
 
-import com.software.eventmanagement.Cookies.CookieController;
+import com.software.eventmanagement.cookies.CookieController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +18,7 @@ public class EventController {
         return eventService.findAll();
     }
 
+    //tested successfully
     @GetMapping("/{id}")
     public ResponseEntity<Event> getEventById(@PathVariable Long id) {
         Event event = eventService.findById(id);
@@ -33,17 +34,18 @@ public class EventController {
         return eventService.save(event);
     }
 
+    // tested successfully 
     @PutMapping("/{id}")
     public ResponseEntity<Event> updateEvent(@PathVariable Long id, @CookieValue(value= "userAuthenticationToken") String userId, @RequestBody Event eventDetails) {
         userId = CookieController.getUsernameFromCookie(userId);
         Event updatedEvent = eventService.edit(id, userId, eventDetails);
-        System.out.println("in id");
         if (updatedEvent != null) {
             return ResponseEntity.ok(updatedEvent);
         }
         return ResponseEntity.badRequest().build();
     }
 
+    // not fully tested
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id, @CookieValue(value= "userAuthenticationToken") String userId) {
         userId = CookieController.getUsernameFromCookie(userId);

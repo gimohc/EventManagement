@@ -12,7 +12,6 @@ public class Student extends Person {
     @ElementCollection
     private List<Long> events;
 
-
     public String getMajor() {
         return major;
     }
