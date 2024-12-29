@@ -68,6 +68,18 @@ public class StudentService {
         event.setNumRatings((short)(numRatings+1));
         eventService.save(event);
     }
+    public void saveFeedback(Long eventId, String studentId, String feedback) {
+        Student student = findById(studentId);
+        Event event = eventService.findById(eventId);
+
+        if(student == null || event == null || studentNotEnrolled(eventId, studentId))
+            return;
+
+        List<String> feedbackList = event.getFeedback();
+        feedbackList.add(feedback);
+        event.setFeedback(feedbackList);
+        eventService.save(event);
+    }
     public boolean studentNotEnrolled(Long eventId, String studentId) {
         Student student = findById(studentId);
         if(student == null)
