@@ -1,5 +1,8 @@
 package com.software.eventmanagement.student;
 
+import com.software.eventmanagement.Feedback.Feedback;
+import com.software.eventmanagement.Feedback.FeedbackId;
+import com.software.eventmanagement.Feedback.FeedbackRepository;
 import com.software.eventmanagement.entities.LoginRequest;
 import com.software.eventmanagement.event.Event;
 import com.software.eventmanagement.event.EventService;
@@ -16,6 +19,8 @@ public class StudentService {
     private StudentsRepository repository;
     @Autowired
     private EventService eventService;
+    @Autowired
+    private FeedbackRepository feedbackRepository;
 
     public Student findById(String id) {
         if(repository.findById(id).isPresent())
@@ -77,10 +82,8 @@ public class StudentService {
         if(student == null || event == null || studentNotEnrolled(eventId, studentId))
             return false;
 
-        List<String> feedbackList = event.getFeedback();
-        feedbackList.add(feedback);
-        event.setFeedback(feedbackList);
-        eventService.save(event);
+        Feedback userFeedback =  (new Feedback(new FeedbackId(studentId, eventId), feedback));
+        feedbackRepository.save(userFeedback);
         return true;
     }
     public boolean studentNotEnrolled(Long eventId, String studentId) {

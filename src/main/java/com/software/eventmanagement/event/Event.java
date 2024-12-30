@@ -1,10 +1,10 @@
 package com.software.eventmanagement.event;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.software.eventmanagement.Feedback.Feedback;
 import jakarta.persistence.*;
 
 import java.sql.Date;
-import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +42,9 @@ public class Event {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime endTime;
 
-    @ElementCollection
-    private List<String> feedback; // not input by registration
+    @OneToMany
+    @JoinColumn(name = "id")
+    private List<Feedback> feedback = new ArrayList<>(); // Not input by registration
 
     public Event(long id, String organizerId, String location, String services, String phoneNumber, String description, String mentorName, Type type, Date date, LocalTime startTime, LocalTime endTime, short seats, short participants, short numRatings) {
         this.id = id;
@@ -60,7 +61,6 @@ public class Event {
         this.seats = seats;
         this.participants = participants;
         this.rating = 0;
-        this.feedback = new ArrayList<String>();
         this.numRatings = 0;
     }
 
@@ -131,11 +131,11 @@ public class Event {
         this.rating = rating;
     }
 
-    public List<String> getFeedback() {
+    public List<Feedback> getFeedback() {
         return feedback;
     }
 
-    public void setFeedback(List<String> feedback) {
+    public void setFeedback(List<Feedback> feedback) {
         this.feedback = feedback;
     }
 
