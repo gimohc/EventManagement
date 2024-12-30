@@ -35,6 +35,7 @@ public class UserController {
         if (userService.verifyUser(request) == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"Invalid username or password\"}");
         CookieController.setUserCookie(response, request.getUsername());
+        System.out.println("login successful");
         return ResponseEntity.status(HttpStatus.OK).body("{\"message\": \"Validation successful\"}");
     }
 }
