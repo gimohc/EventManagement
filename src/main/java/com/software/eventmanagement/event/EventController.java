@@ -2,6 +2,7 @@ package com.software.eventmanagement.event;
 
 import com.software.eventmanagement.cookies.CookieController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,13 +31,16 @@ public class EventController {
     }
 
     @PostMapping
-    public Event createEvent(@RequestBody Event event) {
-        return eventService.save(event);
+    public ResponseEntity<?> createEvent(@RequestBody Event event, @CookieValue(value= "userAuthenticationToken") String userId) {
+        userId = CookieController.getUsernameFromCookie(userId);
+        if(eventService.save(event, userId))
+            return ResponseEntity.status(HttpStatus.OK).body("{\"message\": \"Validation successful\"}");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"Invalid organizer\"}");
     }
 
     // tested successfully 
     @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @CookieValue(value= "userAuthenticationToken") String userId, @RequestBody Event eventDetails) {
+    public ResponseEntity<?> updateEvent(@PathVariable Long id, @CookieValue(value= "userAuthenticationToken") String userId, @RequestBody Event eventDetails) {
         userId = CookieController.getUsernameFromCookie(userId);
         Event updatedEvent = eventService.edit(id, userId, eventDetails);
         if (updatedEvent != null) {

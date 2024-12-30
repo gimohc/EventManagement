@@ -17,6 +17,13 @@ public class EventService {
     public Event save(Event event) {
         return repository.save(event);
     }
+    public boolean save(Event event, String userId) {
+        if(userId == null || userId.isEmpty())
+            return false;
+        event.setOrganizerId(userId);
+        repository.save(event);
+        return true;
+    }
 
     public Event findById(long id) {
         if (repository.findById(id).isPresent())
