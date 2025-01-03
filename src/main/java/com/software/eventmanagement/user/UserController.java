@@ -26,7 +26,7 @@ public class UserController {
     public ResponseEntity<?> createUser(@RequestBody User user, HttpServletResponse response) {
         userService.save(user);
         CookieController.setUserCookie(response, user.getUsername());
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK).body("{\"message\": \"User created successfully\"}");
     }
 
     //tested successfully

@@ -44,19 +44,19 @@ public class EventController {
         userId = CookieController.getUsernameFromCookie(userId);
         Event updatedEvent = eventService.edit(id, userId, eventDetails);
         if (updatedEvent != null) {
-            return ResponseEntity.ok(updatedEvent);
+            return ResponseEntity.ok().body("{\"message\": \"editing successful\"}");;
         }
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.badRequest().body("{\"message\": \"editing failed\"}");
     }
 
     // not fully tested
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEvent(@PathVariable Long id, @CookieValue(value= "userAuthenticationToken") String userId) {
+    public ResponseEntity<?> deleteEvent(@PathVariable Long id, @CookieValue(value= "userAuthenticationToken") String userId) {
         userId = CookieController.getUsernameFromCookie(userId);
         boolean deleted = eventService.delete(id, userId);
         if (deleted) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body("{\"message\": \"deletion successful\"}");
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"deletion failed\"}");
     }
 }
