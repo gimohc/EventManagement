@@ -1,6 +1,5 @@
 package com.software.eventmanagement.Feedback;
 
-import com.software.eventmanagement.event.Event;
 import jakarta.persistence.*;
 
 

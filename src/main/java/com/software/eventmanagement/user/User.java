@@ -2,7 +2,6 @@ package com.software.eventmanagement.user;
 
 import com.software.eventmanagement.entities.Person;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity

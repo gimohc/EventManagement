@@ -23,8 +23,9 @@ public class StudentService {
     private FeedbackRepository feedbackRepository;
 
     public Student findById(String id) {
-        if(repository.findById(id).isPresent())
+        if(repository.findById(id).isPresent()) {
             return repository.findById(id).get();
+        }
         return null;
     }
     public Student verifyStudent(LoginRequest request) {
@@ -32,8 +33,10 @@ public class StudentService {
         if(student.isPresent()) {
             Student found = student.get();
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if(passwordEncoder.matches(request.getPassword(), found.getPassword()))
+            if(passwordEncoder.matches(request.getPassword(), found.getPassword())) {
+                System.out.println("student verified");
                 return found;
+            }
         }
         return null;
     }
@@ -48,6 +51,7 @@ public class StudentService {
         eventService.save(event);
         student.getEvents().add(eventId);
         repository.save(student);
+        System.out.println("student enrolled");
         return true;
     }
     public boolean cancelEnrollment(Long eventId, String studentId) {
@@ -59,6 +63,7 @@ public class StudentService {
         eventService.save(event);
         student.getEvents().remove(eventId);
         repository.save(student);
+        System.out.println("enrollment cancelled");
         return true;
     }
     public boolean rateEvent(Long eventId, String studentId, short rating) {
@@ -73,6 +78,7 @@ public class StudentService {
         event.setRating(rating);
         event.setNumRatings((short)(numRatings+1));
         eventService.save(event);
+        System.out.println("rating saved");
         return true;
     }
     public boolean saveFeedback(Long eventId, String studentId, String feedback) {
@@ -84,6 +90,7 @@ public class StudentService {
 
         Feedback userFeedback =  (new Feedback(new FeedbackId(studentId, eventId), feedback));
         feedbackRepository.save(userFeedback);
+        System.out.println("feedback saved");
         return true;
     }
     public boolean studentNotEnrolled(Long eventId, String studentId) {

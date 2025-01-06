@@ -22,12 +22,15 @@ public class EventService {
             return false;
         event.setOrganizerId(userId);
         repository.save(event);
+        System.out.println("Event created");
         return true;
     }
 
     public Event findById(long id) {
-        if (repository.findById(id).isPresent())
+        if (repository.findById(id).isPresent()) {
+            System.out.println("Event found");
             return repository.findById(id).get();
+        }
         return null;
     }
 
@@ -35,6 +38,7 @@ public class EventService {
         Event event = findById(id);
         if (event != null && event.getOrganizerId().equals(userId)) {
             repository.deleteById(id);
+            System.out.println("Event deleted");
             return true;
         }
         return false;
@@ -47,6 +51,7 @@ public class EventService {
             if (organizer.equals(userId)) {
                 Event newEvent = new Event(event, newEventDetails);
                 repository.save(newEvent);
+                System.out.println("Event edited");
                 return newEvent;
             }
         }

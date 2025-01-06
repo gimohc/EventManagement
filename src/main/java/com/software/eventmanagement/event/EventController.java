@@ -31,7 +31,8 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createEvent(@RequestBody Event event, @CookieValue(value= "userAuthenticationToken") String userId) {
+    public ResponseEntity<?> createEvent(@RequestBody Event event,
+                                         @CookieValue(value= "userAuthenticationToken") String userId) {
         userId = CookieController.getUsernameFromCookie(userId);
         if(eventService.save(event, userId))
             return ResponseEntity.status(HttpStatus.OK).body("{\"message\": \"Validation successful\"}");
@@ -40,18 +41,21 @@ public class EventController {
 
     // tested successfully 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateEvent(@PathVariable Long id, @CookieValue(value= "userAuthenticationToken") String userId, @RequestBody Event eventDetails) {
+    public ResponseEntity<?> updateEvent(@PathVariable Long id,
+                                         @CookieValue(value= "userAuthenticationToken") String userId,
+                                         @RequestBody Event eventDetails) {
         userId = CookieController.getUsernameFromCookie(userId);
         Event updatedEvent = eventService.edit(id, userId, eventDetails);
         if (updatedEvent != null) {
-            return ResponseEntity.ok().body("{\"message\": \"editing successful\"}");;
+            return ResponseEntity.ok().body("{\"message\": \"editing successful\"}");
         }
         return ResponseEntity.badRequest().body("{\"message\": \"editing failed\"}");
     }
 
-    // not fully tested
+    // tested
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteEvent(@PathVariable Long id, @CookieValue(value= "userAuthenticationToken") String userId) {
+    public ResponseEntity<?> deleteEvent(@PathVariable Long id,
+                                         @CookieValue(value= "userAuthenticationToken") String userId) {
         userId = CookieController.getUsernameFromCookie(userId);
         boolean deleted = eventService.delete(id, userId);
         if (deleted) {

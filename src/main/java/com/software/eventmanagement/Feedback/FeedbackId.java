@@ -19,18 +19,6 @@ public class FeedbackId implements Serializable {
 
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Long getEventId() {
-        return eventId;
-    }
-
     public void setEventId(Long eventId) {
         this.eventId = eventId;
     }
@@ -52,5 +40,17 @@ public class FeedbackId implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(username, eventId);
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Long getEventId() {
+        return eventId;
     }
 }

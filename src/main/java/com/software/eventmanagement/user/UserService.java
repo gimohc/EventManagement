@@ -21,14 +21,17 @@ public class UserService {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        System.out.println("user created");
     }
     public User verifyUser(LoginRequest loginRequest) {
         Optional<User> user = userRepository.findById(loginRequest.getUsername());
         if(user.isPresent()) {
             User found = user.get();
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if(passwordEncoder.matches(loginRequest.getPassword(), found.getPassword()))
+            if(passwordEncoder.matches(loginRequest.getPassword(), found.getPassword())) {
+                System.out.println("organizer verified");
                 return found;
+            }
         }
         return null;
     }
