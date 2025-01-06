@@ -24,9 +24,11 @@ public class UserController {
     //tested successfully
     @PostMapping("/create")
     public ResponseEntity<?> createUser(@RequestBody User user, HttpServletResponse response) {
-        userService.save(user);
-        CookieController.setUserCookie(response, user.getUsername());
-        return ResponseEntity.status(HttpStatus.OK).body("{\"message\": \"User created successfully\"}");
+        if(userService.save(user)) {
+            CookieController.setUserCookie(response, user.getUsername());
+            return ResponseEntity.status(HttpStatus.OK).body("{\"message\": \"User created successfully\"}");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"User already exists\"}");
     }
 
     //tested successfully

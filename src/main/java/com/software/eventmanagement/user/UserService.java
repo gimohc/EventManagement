@@ -17,11 +17,17 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void save(User user) {
+    public boolean save(User user) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        List<User> users = userRepository.findAll();
+        for(User entity : users) {
+            if(entity.getUsername().equals(user.getUsername()))
+                return false;
+        }
         userRepository.save(user);
         System.out.println("user created");
+        return true;
     }
     public User verifyUser(LoginRequest loginRequest) {
         Optional<User> user = userRepository.findById(loginRequest.getUsername());
